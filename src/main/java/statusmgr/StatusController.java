@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Examples:
  *    http://localhost:8080/server/status
  *
- *    http://localhost:8080/server/status?name=Noach
+ *    http://localhost:8080/server/status?name=Noach,Reuven
  *
  *
  *
@@ -33,10 +33,10 @@ public class StatusController {
     protected static final String template = "Server Status requested by %s";
     protected final AtomicLong counter = new AtomicLong();
 
-    @RequestMapping("/status")
-    public ServerStatus showServerStatus (@RequestParam List<String> name) {
-        System.out.println("*** DEBUG INFO ***" + name    );
+    @RequestMapping("/status" )
+    public ServerStatus showServerStatus (@RequestParam(value="details",defaultValue = "NONE", required=false) List<String> details,@RequestParam(value="name", defaultValue="Anonymous") String name) {
+        System.out.println("*** DEBUG INFO ***" + name +"  details=  "+ details  );
         return new ServerStatus(counter.incrementAndGet(),
-                            String.format(template, name));
+                String.format(template, name,details));
     }
 }
