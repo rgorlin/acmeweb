@@ -50,5 +50,58 @@ public class ServerStatusControllerTests {
                 .andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$.contentHeader").value("Server Status requested by RebYid"));
     }
+    @Test
+    public void testDetailedOperations() throws Exception {
+
+        this.mockMvc.perform(get("/server/status/detailed").param("details", "operations"))
+                .andDo(print()).andExpect(status().isOk())
+                .andExpect(jsonPath("$.contentHeader").value("Server Status requested by Anonymous"))
+                .andExpect(jsonPath("$.statusDesc").value("Server is up, and is operating normally"));
+    }
+    @Test
+    public void testDetailedMemory() throws Exception {
+
+        this.mockMvc.perform(get("/server/status/detailed").param("details", "memory"))
+                .andDo(print()).andExpect(status().isOk())
+                .andExpect(jsonPath("$.contentHeader").value("Server Status requested by Anonymous"))
+                .andExpect(jsonPath("$.statusDesc").value("Server is up, and it's memory is running low"));
+    }
+    @Test
+    public void testDetailedExtensions() throws Exception {
+
+        this.mockMvc.perform(get("/server/status/detailed").param("details", "extensions"))
+                .andDo(print()).andExpect(status().isOk())
+                .andExpect(jsonPath("$.contentHeader").value("Server Status requested by Anonymous"))
+                .andExpect(jsonPath("$.statusDesc").value("Server is up, and is using these extensions - [Hypervisor, Kubernetes, RAID-6]"));
+    }
+    @Test
+    public void testDetailedAllDetails() throws Exception {
+
+        this.mockMvc.perform(get("/server/status/detailed").param("details", "operations,extensions,memory"))
+                .andDo(print()).andExpect(status().isOk())
+                .andExpect(jsonPath("$.contentHeader").value("Server Status requested by Anonymous"))
+                .andExpect(jsonPath("$.statusDesc").value("Server is up, and is operating normally, and is using these extensions - [Hypervisor, Kubernetes, RAID-6], and it's memory is running low"));
+    }
+    @Test
+    public void testDetailedAllDetailsAndName() throws Exception {
+
+        this.mockMvc.perform(get("/server/status/detailed").param("details", "operations,extensions,memory")
+                .param("name", "Steven"))
+                .andDo(print()).andExpect(status().isOk())
+                .andExpect(jsonPath("$.contentHeader").value("Server Status requested by Steven"))
+                .andExpect(jsonPath("$.statusDesc").value("Server is up, and is operating normally, and is using these extensions - [Hypervisor, Kubernetes, RAID-6], and it's memory is running low"));
+    }
+    @Test
+    public void testWhenDetailsIsNullException() throws Exception {
+        this.mockMvc.perform(get("/server/status/detailed")).andDo(print()).andExpect(status().is4xxClientError());
+
+    }
+    @Test
+    public void testWhenDetailsIsInvalidException() throws Exception {
+        this.mockMvc.perform(get("/server/status/detailed").param("details", "foo")).andDo(print())
+                .andExpect(status().is4xxClientError());
+
+    }
+
 
 }

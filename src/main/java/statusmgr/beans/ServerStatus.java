@@ -1,6 +1,8 @@
 package statusmgr.beans;
 
-import servermgr.ServerManager;
+import servermgr.*;
+
+import java.util.List;
 
 /**
  * A POJO that represents Server Status and can be used to generate JSON for that status
@@ -23,7 +25,28 @@ public class ServerStatus {
         this.contentHeader = contentHeader;
 
         // Obtain current status of server
-        this.statusDesc = ServerManager.getCurrentServerStatus();
+        Status Base= new ServerManager();
+        this.statusDesc = Base.getCurrentServerStatus();
+    }
+    public ServerStatus(long id, String contentHeader, List<String> details) {
+        this.id = id;
+        this.contentHeader = contentHeader;
+        Status Base= new ServerManager();
+        for (String s: details){
+            if(s.equalsIgnoreCase("operations")){
+                Base= new Operations(Base);
+            }
+            else if(s.equalsIgnoreCase("memory")){
+                Base = new Memory(Base);
+            }
+            else if(s.equalsIgnoreCase("extensions")){
+                Base = new Extensions(Base);
+            }
+            else{
+                throw  new BadRequestException(s+ " is not a valid details option");
+            }
+        }
+        this.statusDesc = Base.getCurrentServerStatus();
     }
 
     public ServerStatus() {
