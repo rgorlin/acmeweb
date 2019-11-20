@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package statusmgr;
+package com.acme.statusmgr;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -31,7 +31,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class ServerStatusControllerTests {
+public class ServerIMonitorableServerControllerTests {
 
     @Autowired
     private MockMvc mockMvc;
@@ -64,7 +64,7 @@ public class ServerStatusControllerTests {
         this.mockMvc.perform(get("/server/status/detailed").param("details", "memory"))
                 .andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$.contentHeader").value("Server Status requested by Anonymous"))
-                .andExpect(jsonPath("$.statusDesc").value("Server is up, and it's memory is running low"));
+                .andExpect(jsonPath("$.statusDesc").value("Server is up, and its memory is running low"));
     }
     @Test
     public void testDetailedExtensions() throws Exception {
@@ -80,7 +80,7 @@ public class ServerStatusControllerTests {
         this.mockMvc.perform(get("/server/status/detailed").param("details", "operations,extensions,memory"))
                 .andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$.contentHeader").value("Server Status requested by Anonymous"))
-                .andExpect(jsonPath("$.statusDesc").value("Server is up, and is operating normally, and is using these extensions - [Hypervisor, Kubernetes, RAID-6], and it's memory is running low"));
+                .andExpect(jsonPath("$.statusDesc").value("Server is up, and is operating normally, and is using these extensions - [Hypervisor, Kubernetes, RAID-6], and its memory is running low"));
     }
     @Test
     public void testDetailedAllDetailsAndName() throws Exception {
@@ -89,7 +89,7 @@ public class ServerStatusControllerTests {
                 .param("name", "Steven"))
                 .andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$.contentHeader").value("Server Status requested by Steven"))
-                .andExpect(jsonPath("$.statusDesc").value("Server is up, and is operating normally, and is using these extensions - [Hypervisor, Kubernetes, RAID-6], and it's memory is running low"));
+                .andExpect(jsonPath("$.statusDesc").value("Server is up, and is operating normally, and is using these extensions - [Hypervisor, Kubernetes, RAID-6], and its memory is running low"));
     }
     @Test
     public void testWhenDetailsIsNullException() throws Exception {

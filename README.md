@@ -6,12 +6,12 @@ and manages other manufactoring servers, machinery and processes at the Acme Dis
 
 Syntax for URLS:
  *    All start with /server
- *    /status  will give back status of server
+ *    /IMonitorableServer  will give back IMonitorableServer of server
  *    a param of 'name' specifies a requestor name to appear in response
  *
  * Examples:
- *    http://localhost:8080/server/status
+ *    http://localhost:8080/server/IMonitorableServer
  *
- *    http://localhost:8080/server/status?name=Noach
+ *    http://localhost:8080/server/IMonitorableServer?name=Noach
 
 
