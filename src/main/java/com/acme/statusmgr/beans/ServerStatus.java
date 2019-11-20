@@ -1,6 +1,9 @@
-package statusmgr.beans;
+package com.acme.statusmgr.beans;
 
-import servermgr.*;
+
+
+import com.acme.Application;
+import com.acme.servermgr.*;
 
 import java.util.List;
 
@@ -12,6 +15,7 @@ public class ServerStatus {
     private  long id;
     private String contentHeader;
     private String statusDesc = "Unknown";
+    private ServerManager serverManager;
 
     /**
      * Construct a ServerStatus using info passed in for identification, and obtaining current
@@ -23,15 +27,13 @@ public class ServerStatus {
     public ServerStatus(long id, String contentHeader) {
         this.id = id;
         this.contentHeader = contentHeader;
-
-        // Obtain current status of server
-        Status Base= new ServerManager();
-        this.statusDesc = Base.getCurrentServerStatus();
+        // Obtain and save reference to the ServerManager
+        serverManager = (ServerManager) Application.getApplicationContext().getBean("serverManager");
     }
     public ServerStatus(long id, String contentHeader, List<String> details) {
         this.id = id;
         this.contentHeader = contentHeader;
-        Status Base= new ServerManager();
+        IMonitorableServer Base= new FakeMonitor();
         for (String s: details){
             if(s.equalsIgnoreCase("operations")){
                 Base= new Operations(Base);

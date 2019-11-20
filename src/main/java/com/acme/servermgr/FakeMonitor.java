@@ -1,10 +1,9 @@
-package servermgr;
-
+package com.acme.servermgr;
 /**
  * Manage all servers (service providers) being tracked by the Acme server tracking system
  * For now just some simple static methods for use in school project
  */
-public class ServerManager implements Status {
+public class FakeMonitor implements IMonitorableServer {
 
     /**
      * Get the status of this server
@@ -22,4 +21,5 @@ public class ServerManager implements Status {
     {
         return true;
     }
+
 }

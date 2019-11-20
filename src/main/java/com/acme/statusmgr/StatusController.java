@@ -1,11 +1,11 @@
-package statusmgr;
+package com.acme.statusmgr;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
+import com.acme.statusmgr.beans.ServerStatus;
 import org.springframework.web.bind.annotation.RequestMethod;
-import servermgr.BadRequestException;
-import statusmgr.beans.ServerStatus;
+import com.acme.servermgr.*;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,7 +32,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/server")
 public class StatusController {
 
-    protected static final String template = "Server Status requested by %s";
+    static {
+        // For debug/demo purposes only, dump out class path to stdout to show where resources will come from
+        System.out.println("*** JAVA CLASS PATH***\n" +
+                System.getProperty("java.class.path").replace(":", "      :      ") + "***********\n");
+    }
+        protected static final String template = "Server Status requested by %s";
     protected final AtomicLong counter = new AtomicLong();
 
     @RequestMapping("/status" )
