@@ -40,11 +40,10 @@ public class StatusController {
         protected static final String template = "Server Status requested by %s";
     protected final AtomicLong counter = new AtomicLong();
 
-    @RequestMapping("/status" )
-    public ServerStatus showServerStatus (@RequestParam(value="details",defaultValue = "NONE", required=false) List<String> details,@RequestParam(value="name", defaultValue="Anonymous") String name) {
-        System.out.println("*** DEBUG INFO ***" + name +"  details=  "+ details  );
+    @RequestMapping("/status")
+    public ServerStatus greeting(@RequestParam(value="name", defaultValue="Anonymous") String name) {
         return new ServerStatus(counter.incrementAndGet(),
-                String.format(template, name,details));
+                String.format(template, name));
     }
     @RequestMapping(value = "/status/detailed" , method = RequestMethod.GET)
     public ServerStatus showServerStatusDetails (@RequestParam(value="details") List<String> details,

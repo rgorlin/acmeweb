@@ -10,8 +10,8 @@ public class Operations extends IMonitorableServerDecorator {
         super(IMonitorableServer);
     }
     @Override
-    public String getCurrentServerStatus(){
-        return super.getCurrentServerStatus() + ", and " + getOperationsStatus();
+    public String determineServerStatus(){
+        return super.determineServerStatus() + ", and " + getOperationsStatus();
     }
 
 }

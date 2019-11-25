@@ -10,7 +10,7 @@ import org.springframework.context.annotation.ImportResource;
  */
 @SpringBootApplication
 //@ComponentScan  // Not needed: SpringBootApplication AND at top of package hierarchy
-@ImportResource("classpath:applicationContext.xml")
+@ImportResource("classpath:applicationContext")
 public class Application {
     /**
      * Maintain a reference to Spring's 'context' for our application.

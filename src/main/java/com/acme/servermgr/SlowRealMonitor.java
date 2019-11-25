@@ -11,7 +11,7 @@ import java.time.format.DateTimeFormatter;
 @Service
 public class SlowRealMonitor   implements IMonitorableServer      {
     @Override
-    public String getCurrentServerStatus() {
+    public String determineServerStatus() {
         Boolean goodStatus = true;
         int     origNumCPUs;
         Runtime rt = Runtime.getRuntime();

@@ -10,8 +10,8 @@ public class Memory extends IMonitorableServerDecorator {
         super(IMonitorableServer);
     }
     @Override
-    public String getCurrentServerStatus(){
-        return super.getCurrentServerStatus() + ", and " + getMemoryStatus();
+    public String determineServerStatus(){
+        return super.determineServerStatus() + ", and " + getMemoryStatus();
 
     }
 

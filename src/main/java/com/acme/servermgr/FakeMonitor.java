@@ -9,7 +9,7 @@ public class FakeMonitor implements IMonitorableServer {
      * Get the status of this server
      * @return a descriptive string about the servers status
      */
-     public String getCurrentServerStatus() {
+     public String determineServerStatus() {
         return "Server is up";
     }
 
