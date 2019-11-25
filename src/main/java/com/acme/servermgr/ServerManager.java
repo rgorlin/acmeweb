@@ -23,7 +23,7 @@ public class ServerManager {
      */
     public String getCurrentServerStatus() {
 
-        String status = monitor.getCurrentServerStatus();
+        String status = monitor.determineServerStatus();
 
         return status;
     }

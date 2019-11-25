@@ -48,7 +48,7 @@ public class ServerStatus {
                 throw  new BadRequestException(s+ " is not a valid details option");
             }
         }
-        this.statusDesc = Base.getCurrentServerStatus();
+        this.statusDesc = Base.determineServerStatus();
     }
 
     public ServerStatus() {
@@ -66,7 +66,7 @@ public class ServerStatus {
 
 
     public String getStatusDesc() {
-        return statusDesc;
+        return serverManager.getCurrentServerStatus();
     }
 
 

@@ -5,5 +5,5 @@ package com.acme.servermgr;
  * @see IMonitorableServerDecorator
  */
 public interface IMonitorableServer {
-    String getCurrentServerStatus();
+    String determineServerStatus();
 }

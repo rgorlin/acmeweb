@@ -11,8 +11,8 @@ public abstract class IMonitorableServerDecorator implements IMonitorableServer 
         this.IMonitorableServer = IMonitorableServer;
     }
     @Override
-    public String getCurrentServerStatus(){
-        return IMonitorableServer.getCurrentServerStatus();
+    public String determineServerStatus(){
+        return IMonitorableServer.determineServerStatus();
     }
     public String getMemoryStatus(){
         return "its memory is running low";

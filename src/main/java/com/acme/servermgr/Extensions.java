@@ -10,7 +10,7 @@ public class Extensions extends IMonitorableServerDecorator {
         super(IMonitorableServer);
     }
     @Override
-    public String getCurrentServerStatus(){
-        return  super.getCurrentServerStatus() + ", and is " + getExtensionsStatus();
+    public String determineServerStatus(){
+        return  super.determineServerStatus() + ", and is " + getExtensionsStatus();
     }
 }
