@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.acme.statusmgr;
+package statusmgr;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -31,7 +31,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class ServerIMonitorableServerControllerTests {
+public class ServerStatusControllerTests {
 
     @Autowired
     private MockMvc mockMvc;
@@ -56,7 +56,7 @@ public class ServerIMonitorableServerControllerTests {
         this.mockMvc.perform(get("/server/status/detailed").param("details", "operations"))
                 .andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$.contentHeader").value("Server Status requested by Anonymous"))
-                .andExpect(jsonPath("$.statusDesc").value("Server is up, and is operating normally"));
+                .andExpect(jsonPath("$.statusDesc").value("Server is up , and is operating normally"));
     }
     @Test
     public void testDetailedMemory() throws Exception {
@@ -64,7 +64,7 @@ public class ServerIMonitorableServerControllerTests {
         this.mockMvc.perform(get("/server/status/detailed").param("details", "memory"))
                 .andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$.contentHeader").value("Server Status requested by Anonymous"))
-                .andExpect(jsonPath("$.statusDesc").value("Server is up, and its memory is running low"));
+                .andExpect(jsonPath("$.statusDesc").value("Server is up , and memory is running low"));
     }
     @Test
     public void testDetailedExtensions() throws Exception {
@@ -72,7 +72,7 @@ public class ServerIMonitorableServerControllerTests {
         this.mockMvc.perform(get("/server/status/detailed").param("details", "extensions"))
                 .andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$.contentHeader").value("Server Status requested by Anonymous"))
-                .andExpect(jsonPath("$.statusDesc").value("Server is up, and is using these extensions - [Hypervisor, Kubernetes, RAID-6]"));
+                .andExpect(jsonPath("$.statusDesc").value("Server is up , and is using these extensions - [Hypervisor, Kubernetes, RAID-6]"));
     }
     @Test
     public void testDetailedAllDetails() throws Exception {
@@ -80,7 +80,7 @@ public class ServerIMonitorableServerControllerTests {
         this.mockMvc.perform(get("/server/status/detailed").param("details", "operations,extensions,memory"))
                 .andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$.contentHeader").value("Server Status requested by Anonymous"))
-                .andExpect(jsonPath("$.statusDesc").value("Server is up, and is operating normally, and is using these extensions - [Hypervisor, Kubernetes, RAID-6], and its memory is running low"));
+                .andExpect(jsonPath("$.statusDesc").value("Server is up , and is operating normally , and is using these extensions - [Hypervisor, Kubernetes, RAID-6] , and memory is running low"));
     }
     @Test
     public void testDetailedAllDetailsAndName() throws Exception {
@@ -89,7 +89,7 @@ public class ServerIMonitorableServerControllerTests {
                 .param("name", "Steven"))
                 .andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$.contentHeader").value("Server Status requested by Steven"))
-                .andExpect(jsonPath("$.statusDesc").value("Server is up, and is operating normally, and is using these extensions - [Hypervisor, Kubernetes, RAID-6], and its memory is running low"));
+                .andExpect(jsonPath("$.statusDesc").value("Server is up , and is operating normally , and is using these extensions - [Hypervisor, Kubernetes, RAID-6] , and memory is running low"));
     }
     @Test
     public void testWhenDetailsIsNullException() throws Exception {
