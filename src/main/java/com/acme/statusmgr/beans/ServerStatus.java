@@ -15,14 +15,13 @@ public class ServerStatus {
     private  long id;
     private String contentHeader;
     private String statusDesc = "Unknown";
-    private ServerManager serverManager;
+    protected ServerManager serverManager;
 
     /**
      * Construct a ServerStatus using info passed in for identification, and obtaining current
      * server status from the appropriate Manager class.
      *
-     * @param id                a numeric identifier/counter of which request this
-     * @param contentHeader     info about the request
+     *  @param contentHeader     info about the request
      */
     public ServerStatus(long id, String contentHeader) {
         this.id = id;
