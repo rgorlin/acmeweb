@@ -1,25 +1,16 @@
 package com.acme.servermgr;
+
+import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.stereotype.Service;
+
 /**
- * Manage all servers (service providers) being tracked by the Acme server tracking system
- * For now just some simple static methods for use in school project
+ * Implement a fake server monitor such as would be used for unit tests, annotated as a Spring Service.
  */
+@Service
 public class FakeMonitor implements IMonitorableServer {
 
-    /**
-     * Get the status of this server
-     * @return a descriptive string about the servers status
-     */
-     public String getCurrentServerStatus() {
+    @Override
+    public String getCurrentServerStatus() {
         return "Server is up";
     }
-
-    /**
-     * Find out if this server is operating normally
-     * @return Boolean indicating if server is operating normally
-     */
-     public Boolean isOperatingNormally()
-    {
-        return true;
-    }
-
 }

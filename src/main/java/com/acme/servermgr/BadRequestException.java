@@ -6,9 +6,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 /**
  * Used whenever a Bad request is made and can be used to display any error message.
  */
-@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason="See debug info for more information")
+@ResponseStatus(value = HttpStatus.BAD_REQUEST)
 public class BadRequestException extends RuntimeException {
+    public BadRequestException(){
+        super();
+    }
     public BadRequestException(String msg){
-        System.out.println(msg);
+        super(msg);
     }
 }
