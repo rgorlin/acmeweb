@@ -1,7 +1,8 @@
 package statusmgr.decorators;
 
-import servermgr.ServerManager;
-import statusmgr.beans.ServerStatus;
+
+import com.acme.servermgr.ServerManager;
+import com.acme.statusmgr.beans.ServerStatus;
 
 /**
  * used to check the extensions a server is using.
@@ -19,6 +20,6 @@ public class Extensions extends ServerStatus {
 
     @Override
     public String getStatusDesc() {
-        return baseComp.getStatusDesc() + " , and is using these extensions - " + ServerManager.getExtensions();
+        return baseComp.getStatusDesc() + " , and is " + ServerManager.getExtensionsStatus();
     }
 }

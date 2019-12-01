@@ -1,7 +1,8 @@
 package statusmgr.decorators;
 
-import servermgr.ServerManager;
-import statusmgr.beans.ServerStatus;
+import com.acme.servermgr.ServerManager;
+import com.acme.statusmgr.beans.ServerStatus;
+
 
 /**
  * used to check how the server is operating
@@ -19,6 +20,6 @@ public class Operations extends ServerStatus {
 
     @Override
     public String getStatusDesc() {
-         return baseComp.getStatusDesc() + " , and " + ServerManager.getOperations();
+         return baseComp.getStatusDesc() + " , and " + ServerManager.getOperationsStatus();
     }
 }

@@ -4,11 +4,8 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 import com.acme.statusmgr.beans.ServerStatus;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import com.acme.servermgr.*;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 import statusmgr.decorators.BasicServerStatus;
 import statusmgr.decorators.Extensions;
 import statusmgr.decorators.Memory;
@@ -40,14 +37,14 @@ public class StatusController {
         System.out.println("*** JAVA CLASS PATH***\n" +
                 System.getProperty("java.class.path").replace(":", "      :      ") + "***********\n");
     }
-        protected static final String template = "Server Status requested by %s";
+    protected static final String template = "Server Status requested by %s";
     protected final AtomicLong counter = new AtomicLong();
 
-    @RequestMapping("/status")
-    public ServerStatus showServerStatus(@RequestParam(value = "details", defaultValue = "NONE", required = false) List<String> details, @RequestParam(value = "name", defaultValue = "Anonymous") String name) {
-        System.out.println("*** DEBUG INFO ***" + name + "  details=  " + details);
+    @RequestMapping(value ="/status", method = RequestMethod.GET)
+    public ServerStatus showServerStatus(@RequestParam(value = "name", defaultValue = "Anonymous") String name) {
+        System.out.println("*** DEBUG INFO ***" + name);
         return new BasicServerStatus(counter.incrementAndGet(),
-                String.format(template, name, details));
+                String.format(template, name));
     }
 
     @RequestMapping(value = "/status/detailed", method = RequestMethod.GET)

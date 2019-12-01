@@ -14,7 +14,7 @@ public class ServerManager {
      * Reference to a class that knows how to get details about what we are interested in on a server
      */
     @Autowired
-    private IMonitorableServer monitor;
+    private  IMonitorableServer monitor;
 
 
     /**
@@ -23,7 +23,7 @@ public class ServerManager {
      */
     public String getCurrentServerStatus() {
 
-        String status = monitor.getCurrentServerStatus();
+         String  status = monitor.getCurrentServerStatus();
 
         return status;
     }
@@ -32,8 +32,15 @@ public class ServerManager {
      * Find out if this server is operating normally
      * @return Boolean indicating if server is operating normally
      */
-    public Boolean isOperatingNormally()
-    {
-        return true;
-    }    //TODO should eventually use the monitor interface
+    public static String getMemoryStatus(){
+        return "memory is running low";
+    }
+
+    public static String getExtensionsStatus(){
+        return "using these extensions - [Hypervisor, Kubernetes, RAID-6]";
+    }
+
+    public static String getOperationsStatus(){
+        return "is operating normally";
+    }
 }

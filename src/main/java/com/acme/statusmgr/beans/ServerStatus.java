@@ -1,6 +1,9 @@
-package statusmgr.beans;
+package com.acme.statusmgr.beans;
 
-import servermgr.*;
+
+import com.acme.Application;
+import com.acme.servermgr.ServerManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import statusmgr.decorators.BasicServerStatus;
 
 import java.util.List;
@@ -12,7 +15,8 @@ public abstract class ServerStatus {
 
     private  long id;
     private String contentHeader;
-    private String statusDesc = "Unknown";
+    private String statusDesc;
+    protected ServerManager serverManager;
 
     /**
      * Construct a ServerStatus using info passed in for identification, and obtaining current
@@ -24,6 +28,7 @@ public abstract class ServerStatus {
     public ServerStatus(long id, String contentHeader) {
         this.id = id;
         this.contentHeader = contentHeader;
+        serverManager = (ServerManager) Application.getApplicationContext().getBean("serverManager");
     }
 
     public ServerStatus() {

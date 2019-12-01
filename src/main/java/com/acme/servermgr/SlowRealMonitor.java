@@ -1,4 +1,5 @@
 package com.acme.servermgr;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
@@ -9,7 +10,7 @@ import java.time.format.DateTimeFormatter;
  * Implement a 'real' server monitor, that gives back results that may differ from what unit tests expect.
  */
 @Service
-public class SlowRealMonitor   implements IMonitorableServer      {
+public class SlowRealMonitor implements IMonitorableServer      {
     @Override
     public String getCurrentServerStatus() {
         Boolean goodStatus = true;
