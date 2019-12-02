@@ -1,4 +1,4 @@
-package statusmgr.decorators;
+package com.acme.decorators.complex;
 
 import com.acme.servermgr.ServerManager;
 import com.acme.statusmgr.beans.ServerStatus;
@@ -10,16 +10,16 @@ import com.acme.statusmgr.beans.ServerStatus;
  */
 public class Memory extends ServerStatus {
 
-    private final ServerStatus baseComp;
+    private final ServerStatus base;
 
-    public Memory(long id, String header, ServerStatus baseComp){
+    public Memory(long id, String header, ServerStatus base){
         super(id, header);
-        this.baseComp = baseComp;
+        this.base = base;
     }
 
     @Override
     public String getStatusDesc() {
-        return baseComp.getStatusDesc() + " , and " + ServerManager.getMemoryStatus();
+        return base.getStatusDesc() + " , and " + ServerManager.getMemoryStatus();
     }
 
 }
