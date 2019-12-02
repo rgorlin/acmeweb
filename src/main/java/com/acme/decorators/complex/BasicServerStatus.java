@@ -1,10 +1,12 @@
-package statusmgr.decorators;
+package com.acme.decorators.complex;
 
-import com.acme.servermgr.ServerManager;
-import com.acme.servermgr.SlowRealMonitor;
 import com.acme.statusmgr.beans.ServerStatus;
-import org.springframework.beans.factory.annotation.Configurable;
 
+/**
+ * the Basic Server status used with the decorators
+ * @see ServerStatus
+ * @see  Memory for an example
+ */
 public class BasicServerStatus extends ServerStatus {
     public BasicServerStatus(long id, String header){
         super(id, header);

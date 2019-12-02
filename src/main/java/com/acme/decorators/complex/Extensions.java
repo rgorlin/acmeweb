@@ -1,4 +1,4 @@
-package statusmgr.decorators;
+package com.acme.decorators.complex;
 
 
 import com.acme.servermgr.ServerManager;
@@ -11,15 +11,15 @@ import com.acme.statusmgr.beans.ServerStatus;
  */
 public class Extensions extends ServerStatus {
 
-    private final ServerStatus baseComp;
+    private final ServerStatus base;
 
     public Extensions(long id, String header, ServerStatus baseComp){
         super(id, header);
-        this.baseComp = baseComp;
+        this.base = baseComp;
     }
 
     @Override
     public String getStatusDesc() {
-        return baseComp.getStatusDesc() + " , and is " + ServerManager.getExtensionsStatus();
+        return base.getStatusDesc() + " , and is " + ServerManager.getExtensionsStatus();
     }
 }

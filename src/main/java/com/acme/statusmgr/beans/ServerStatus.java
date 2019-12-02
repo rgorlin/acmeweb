@@ -3,10 +3,7 @@ package com.acme.statusmgr.beans;
 
 import com.acme.Application;
 import com.acme.servermgr.ServerManager;
-import org.springframework.beans.factory.annotation.Autowired;
-import statusmgr.decorators.BasicServerStatus;
-
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
  * A POJO that represents Server Status and can be used to generate JSON for that status
@@ -31,14 +28,11 @@ public abstract class ServerStatus {
         serverManager = (ServerManager) Application.getApplicationContext().getBean("serverManager");
     }
 
-    public ServerStatus() {
-
-    }
-
+    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     public long getId() {
         return id;
     }
-
+    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     public String getContentHeader() {
 
         return contentHeader;

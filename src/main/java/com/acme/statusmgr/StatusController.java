@@ -4,12 +4,12 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 import com.acme.statusmgr.beans.ServerStatus;
+import com.acme.statusmgr.beans.factories.SimpleFactory;
+import com.acme.statusmgr.beans.factories.StatusFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.acme.servermgr.*;
-import statusmgr.decorators.BasicServerStatus;
-import statusmgr.decorators.Extensions;
-import statusmgr.decorators.Memory;
-import statusmgr.decorators.Operations;
+import com.acme.decorators.complex.BasicServerStatus;
 
 /**
  * Controller for all web/REST requests about the status of servers
@@ -26,6 +26,8 @@ import statusmgr.decorators.Operations;
  * http://localhost:8080/server/status?name=Noach,Reuven
  * <p>
  * http://localhost:8080/server/status/detailed?details=memory
+ * <p>
+ * http://localhost:8080/server/status/detailed?details=extensions&levelOfDetail=simple
  */
 
 @RestController
@@ -37,10 +39,18 @@ public class StatusController {
         System.out.println("*** JAVA CLASS PATH***\n" +
                 System.getProperty("java.class.path").replace(":", "      :      ") + "***********\n");
     }
+
     protected static final String template = "Server Status requested by %s";
     protected final AtomicLong counter = new AtomicLong();
+    @Autowired
+    StatusFactory factory;
 
-    @RequestMapping(value ="/status", method = RequestMethod.GET)
+    public StatusController(StatusFactory factory) {
+        this.factory = factory;
+    }
+
+
+    @RequestMapping(value = "/status", method = RequestMethod.GET)
     public ServerStatus showServerStatus(@RequestParam(value = "name", defaultValue = "Anonymous") String name) {
         System.out.println("*** DEBUG INFO ***" + name);
         return new BasicServerStatus(counter.incrementAndGet(),
@@ -49,38 +59,21 @@ public class StatusController {
 
     @RequestMapping(value = "/status/detailed", method = RequestMethod.GET)
     public ServerStatus showServerStatusDetails(@RequestParam(value = "details") List<String> details,
-                                                @RequestParam(value = "name", required = false, defaultValue = "Anonymous") String name) throws BadRequestException {
-        System.out.println("*** DEBUG INFO ***" + name + "  details=  " + details);
+                                                @RequestParam(value = "name", required = false, defaultValue = "Anonymous") String name,
+                                                @RequestParam(value = "levelOfDetail", required = false, defaultValue = "complex") String levelOfDetail) throws BadRequestException {
         if (details == null) {
             throw new BadRequestException("Required List parameter 'details' is not present\",\"path\":\"/server/status/detailed\"");
         }
-        long id=counter.incrementAndGet();
-        String header= String.format(template,name);
+        long id = counter.incrementAndGet();
+        String header = String.format(template, name);
+        if (levelOfDetail.equalsIgnoreCase("complex"))
+            return factory.getServerStatus(id, header, details);
 
-        ServerStatus base = new BasicServerStatus(id,header);
-
-        ServerStatus decoratedBase = decorate(id,header,details,base);
-
-        return new ServerStatus(id,header) {
-            @Override
-            public String getStatusDesc() {
-                return decoratedBase.getStatusDesc();
-            }
-        };
-    }
-
-    private ServerStatus decorate(long id, String header, List<String> details, ServerStatus base) {
-        for (String s : details) {
-            if (s.equalsIgnoreCase("operations")) {
-                base = new Operations(id,header,base);
-            } else if (s.equalsIgnoreCase("memory")) {
-                base = new Memory(id,header,base);
-            } else if (s.equalsIgnoreCase("extensions")) {
-                base = new Extensions(id,header,base);
-            } else {
-                throw new BadRequestException(s + " is not a valid details option");
-            }
+        else if (levelOfDetail.equalsIgnoreCase("simple")) {
+            factory = new SimpleFactory();
+            return factory.getServerStatus(0, null, details);
+        } else {
+            throw new BadRequestException(levelOfDetail + "is not a valid levelOfDetail");
         }
-        return base;
     }
 }
