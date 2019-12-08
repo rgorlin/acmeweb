@@ -28,6 +28,10 @@ import com.acme.decorators.complex.BasicServerStatus;
  * http://localhost:8080/server/status/detailed?details=memory
  * <p>
  * http://localhost:8080/server/status/detailed?details=extensions&levelOfDetail=simple
+ * <p>
+ * For use with the DiskCommand
+ * http://localhost:8080/server/disk/status?name=Billy
+ * <p>
  */
 
 @RestController
@@ -75,5 +79,11 @@ public class StatusController {
         } else {
             throw new BadRequestException(levelOfDetail + "is not a valid levelOfDetail");
         }
+    }
+    @RequestMapping(value = "/disk/status", method = RequestMethod.GET)
+    public DiskStatus showDiskStatus(
+            @RequestParam(value = "name", required = false, defaultValue = "Anonymous") String name )
+    {
+        return new DiskStatus(counter.incrementAndGet(), String.format(template, name));
     }
 }
