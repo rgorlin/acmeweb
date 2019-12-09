@@ -10,6 +10,7 @@ import com.acme.decorators.simple.SimpleOperations;
 import java.util.List;
 
 public class SimpleFactory implements StatusFactory {
+
     private long id;
     private String header;
     private List<String> details;
@@ -23,14 +24,9 @@ public class SimpleFactory implements StatusFactory {
 
         ServerStatus base = new SimpleBasicServerStatus(id, header);
 
-        ServerStatus decoratedBase = decorateBaseComp(base);
+        ServerStatus decoratedBase= decorateBaseComp(base);
 
-        return new ServerStatus(id, header) {
-            @Override
-            public String getStatusDesc() {
-                return decoratedBase.getStatusDesc();
-            }
-        };
+        return decoratedBase;
 
     }
 

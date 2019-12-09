@@ -18,8 +18,8 @@ public class Memory extends ServerStatus {
     }
 
     @Override
-    public String getStatusDesc() {
-        return base.getStatusDesc() + " , and " + ServerManager.getMemoryStatus();
+    public String obtainStatusDesc() {
+        return base.obtainStatusDesc() + " , and " + ServerManager.getMemoryStatus();
     }
 
 }

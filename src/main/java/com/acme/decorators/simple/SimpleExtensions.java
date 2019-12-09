@@ -9,14 +9,27 @@ import com.acme.statusmgr.beans.ServerStatus;
  * and therefor not shown
  */
 public class SimpleExtensions extends ServerStatus {
-    private ServerStatus base;
-    public SimpleExtensions(long id, String header,ServerStatus base) {
-        super(id, header);
-        this.base=base;
+
+    private ServerStatus baseComp;
+
+    public SimpleExtensions(long id, String contentHeader, ServerStatus baseComp) {
+        super(id, contentHeader);
+        this.baseComp = baseComp;
     }
 
     @Override
-    public String getStatusDesc() {
-        return base.getStatusDesc() + " , and is " + ServerManager.getExtensionsStatus();
+    public String obtainStatusDesc() {
+        return (baseComp.obtainStatusDesc() + ", and is using these extensions" + this.serverManager.getExtensionsStatus());
+    }
+
+
+    @Override
+    public String getContentHeader(){
+        return null;
+    }
+
+    @Override
+    public long getId(){
+        return 0;
     }
 }

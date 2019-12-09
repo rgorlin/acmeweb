@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 /**
  * A POJO that represents Server Status and can be used to generate JSON for that status
  */
-public abstract class ServerStatus {
+public abstract class ServerStatus implements StatusResponce {
 
     private  long id;
     private String contentHeader;
@@ -29,9 +29,11 @@ public abstract class ServerStatus {
     }
 
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)
+    @Override
     public long getId() {
         return id;
     }
+    @Override
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     public String getContentHeader() {
 
@@ -39,7 +41,14 @@ public abstract class ServerStatus {
     }
 
 
-    public abstract String getStatusDesc();
+    public abstract String obtainStatusDesc();
+    @Override
+    public String getStatusDesc(){
+        return statusDesc;
+    }
+    public void setStatusDesc(String statusDesc){
+        this.statusDesc=statusDesc;
+    }
 
 
 }

@@ -9,16 +9,26 @@ import com.acme.statusmgr.beans.ServerStatus;
  * and therefor not shown
  */
 public class SimpleOperations extends ServerStatus {
+    private ServerStatus baseComp;
 
-    private final ServerStatus base;
-
-    public SimpleOperations(long id, String header, ServerStatus base){
-        super(id, header);
-        this.base = base;
+    public SimpleOperations(long id, String contentHeader, ServerStatus baseComp) {
+        super(id, contentHeader);
+        this.baseComp = baseComp;
     }
 
     @Override
-    public String getStatusDesc() {
-        return base.getStatusDesc() + " , and " + ServerManager.getOperationsStatus();
+    public String obtainStatusDesc() {
+        return (baseComp.obtainStatusDesc() + ", and " + this.serverManager.getOperationsStatus());
+    }
+
+
+    @Override
+    public String getContentHeader(){
+        return null;
+    }
+
+    @Override
+    public long getId(){
+        return 0;
     }
 }
