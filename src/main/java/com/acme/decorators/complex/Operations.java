@@ -19,7 +19,7 @@ public class Operations extends ServerStatus {
     }
 
     @Override
-    public String getStatusDesc() {
-         return base.getStatusDesc() + " , and " + ServerManager.getOperationsStatus();
+    public String obtainStatusDesc() {
+         return base.obtainStatusDesc() + " , and " + ServerManager.getOperationsStatus();
     }
 }

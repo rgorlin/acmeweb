@@ -10,12 +10,30 @@ import com.acme.statusmgr.beans.ServerStatus;
  * @see  SimpleMemory for an example
  */
 public class SimpleBasicServerStatus extends ServerStatus {
-    public SimpleBasicServerStatus(long id, String header){
-        super(id, header);
+
+    /**
+     * Construct a ServerStatus using info passed in for identification, and obtaining current
+     * server status from the appropriate Manager class.
+     *
+     * @param id            a numeric identifier/counter of which request this
+     * @param contentHeader info about the request
+     */
+    public SimpleBasicServerStatus(long id, String contentHeader) {
+        super(id, contentHeader);
     }
 
     @Override
-    public String getStatusDesc() {
+    public String obtainStatusDesc() {
         return this.serverManager.getCurrentServerStatus();
+    }
+
+    @Override
+    public String getContentHeader(){
+        return null;
+    }
+
+    @Override
+    public long getId(){
+        return 0;
     }
 }

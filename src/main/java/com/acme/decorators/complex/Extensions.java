@@ -19,7 +19,7 @@ public class Extensions extends ServerStatus {
     }
 
     @Override
-    public String getStatusDesc() {
-        return base.getStatusDesc() + " , and is " + ServerManager.getExtensionsStatus();
+    public String obtainStatusDesc() {
+        return base.obtainStatusDesc() + " , and is " + ServerManager.getExtensionsStatus();
     }
 }

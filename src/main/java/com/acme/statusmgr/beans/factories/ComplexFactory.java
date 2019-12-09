@@ -29,8 +29,8 @@ public class ComplexFactory implements StatusFactory {
 
         return new ServerStatus(id, header) {
             @Override
-            public String getStatusDesc() {
-                return decoratedBase.getStatusDesc();
+            public String obtainStatusDesc() {
+                return decoratedBase.obtainStatusDesc();
             }
         };
     }

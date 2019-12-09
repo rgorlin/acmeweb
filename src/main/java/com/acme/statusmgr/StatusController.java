@@ -3,7 +3,10 @@ package com.acme.statusmgr;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
+import com.acme.commands.DetailedServerStatusCmd;
+import com.acme.executors.SerialExecutor;
 import com.acme.statusmgr.beans.ServerStatus;
+import com.acme.statusmgr.beans.StatusResponce;
 import com.acme.statusmgr.beans.factories.SimpleFactory;
 import com.acme.statusmgr.beans.factories.StatusFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,42 +49,30 @@ public class StatusController {
 
     protected static final String template = "Server Status requested by %s";
     protected final AtomicLong counter = new AtomicLong();
-    @Autowired
-    StatusFactory factory;
-
-    public StatusController(StatusFactory factory) {
-        this.factory = factory;
-    }
 
 
     @RequestMapping(value = "/status", method = RequestMethod.GET)
-    public ServerStatus showServerStatus(@RequestParam(value = "name", defaultValue = "Anonymous") String name) {
+    public StatusResponce showServerStatus(@RequestParam(value = "name", defaultValue = "Anonymous") String name) {
         System.out.println("*** DEBUG INFO ***" + name);
         return new BasicServerStatus(counter.incrementAndGet(),
                 String.format(template, name));
     }
 
     @RequestMapping(value = "/status/detailed", method = RequestMethod.GET)
-    public ServerStatus showServerStatusDetails(@RequestParam(value = "details") List<String> details,
+    public StatusResponce showServerStatusDetails(@RequestParam(value = "details") List<String> details,
                                                 @RequestParam(value = "name", required = false, defaultValue = "Anonymous") String name,
                                                 @RequestParam(value = "levelOfDetail", required = false, defaultValue = "complex") String levelOfDetail) throws BadRequestException {
         if (details == null) {
             throw new BadRequestException("Required List parameter 'details' is not present\",\"path\":\"/server/status/detailed\"");
         }
         long id = counter.incrementAndGet();
-        String header = String.format(template, name);
-        if (levelOfDetail.equalsIgnoreCase("complex"))
-            return factory.getServerStatus(id, header, details);
-
-        else if (levelOfDetail.equalsIgnoreCase("simple")) {
-            factory = new SimpleFactory();
-            return factory.getServerStatus(0, null, details);
-        } else {
-            throw new BadRequestException(levelOfDetail + "is not a valid levelOfDetail");
-        }
+        DetailedServerStatusCmd cmd = new DetailedServerStatusCmd(id,template,name,details,levelOfDetail);
+        SerialExecutor exc = new SerialExecutor(cmd);
+        exc.handleImmediately();
+        return cmd.getResult();
     }
     @RequestMapping(value = "/disk/status", method = RequestMethod.GET)
-    public DiskStatus showDiskStatus(
+    public StatusResponce showDiskStatus(
             @RequestParam(value = "name", required = false, defaultValue = "Anonymous") String name )
     {
         return new DiskStatus(counter.incrementAndGet(), String.format(template, name));

@@ -10,15 +10,26 @@ import com.acme.statusmgr.beans.ServerStatus;
  */
 public class SimpleMemory extends ServerStatus {
 
-    private final ServerStatus base;
+    private ServerStatus baseComp;
 
-    public SimpleMemory(long id, String header, ServerStatus base){
-        super(id, header);
-        this.base = base;
+    public SimpleMemory(long id, String contentHeader, ServerStatus baseComp) {
+        super(id, contentHeader);
+        this.baseComp = baseComp;
     }
 
     @Override
-    public String getStatusDesc() {
-        return base.getStatusDesc() + " , and " + ServerManager.getMemoryStatus();
+    public String obtainStatusDesc() {
+        return (baseComp.obtainStatusDesc() + ", and " + this.serverManager.getMemoryStatus());
+    }
+
+
+    @Override
+    public String getContentHeader(){
+        return null;
+    }
+
+    @Override
+    public long getId(){
+        return 0;
     }
 }
