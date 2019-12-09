@@ -3,7 +3,9 @@ package com.acme.statusmgr;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
+import com.acme.commands.BasicServerStatusCmd;
 import com.acme.commands.DetailedServerStatusCmd;
+import com.acme.commands.DiskStatusCmd;
 import com.acme.executors.SerialExecutor;
 import com.acme.statusmgr.beans.ServerStatus;
 import com.acme.statusmgr.beans.StatusResponce;
@@ -13,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.acme.servermgr.*;
 import com.acme.decorators.complex.BasicServerStatus;
+
+import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 /**
  * Controller for all web/REST requests about the status of servers
@@ -51,14 +55,17 @@ public class StatusController {
     protected final AtomicLong counter = new AtomicLong();
 
 
-    @RequestMapping(value = "/status", method = RequestMethod.GET)
+    @RequestMapping(value = "/status", method = GET)
     public StatusResponce showServerStatus(@RequestParam(value = "name", defaultValue = "Anonymous") String name) {
         System.out.println("*** DEBUG INFO ***" + name);
-        return new BasicServerStatus(counter.incrementAndGet(),
-                String.format(template, name));
+        BasicServerStatusCmd cmd = new BasicServerStatusCmd(counter.incrementAndGet(), template, name);
+        SerialExecutor exc = new SerialExecutor(cmd);
+        exc.handleImmediately();
+        return cmd.getResult();
+
     }
 
-    @RequestMapping(value = "/status/detailed", method = RequestMethod.GET)
+    @RequestMapping(value = "/status/detailed", method = GET)
     public StatusResponce showServerStatusDetails(@RequestParam(value = "details") List<String> details,
                                                 @RequestParam(value = "name", required = false, defaultValue = "Anonymous") String name,
                                                 @RequestParam(value = "levelOfDetail", required = false, defaultValue = "complex") String levelOfDetail) throws BadRequestException {
@@ -71,10 +78,13 @@ public class StatusController {
         exc.handleImmediately();
         return cmd.getResult();
     }
-    @RequestMapping(value = "/disk/status", method = RequestMethod.GET)
+    @RequestMapping(value = "/disk/status", method = GET)
     public StatusResponce showDiskStatus(
             @RequestParam(value = "name", required = false, defaultValue = "Anonymous") String name )
     {
-        return new DiskStatus(counter.incrementAndGet(), String.format(template, name));
+        DiskStatusCmd cmd = new DiskStatusCmd(counter.incrementAndGet(), template, name);
+        SerialExecutor executor = new SerialExecutor(cmd);
+        executor.handleImmediately();
+        return cmd.getResult();
     }
 }
