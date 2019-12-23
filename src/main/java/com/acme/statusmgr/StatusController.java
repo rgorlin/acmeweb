@@ -1,5 +1,6 @@
 package com.acme.statusmgr;
 
+import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -11,6 +12,9 @@ import com.acme.statusmgr.beans.ServerStatus;
 import com.acme.statusmgr.beans.StatusResponce;
 import com.acme.statusmgr.beans.factories.SimpleFactory;
 import com.acme.statusmgr.beans.factories.StatusFactory;
+import com.acme.statusmgr.disk.InvalidNameException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.acme.servermgr.*;
@@ -82,9 +86,10 @@ public class StatusController {
     public StatusResponce showDiskStatus(
             @RequestParam(value = "name", required = false, defaultValue = "Anonymous") String name )
     {
-        DiskStatusCmd cmd = new DiskStatusCmd(counter.incrementAndGet(), template, name);
-        SerialExecutor executor = new SerialExecutor(cmd);
-        executor.handleImmediately();
-        return cmd.getResult();
+            DiskStatusCmd cmd = new DiskStatusCmd(counter.incrementAndGet(), template, name);
+            SerialExecutor executor = new SerialExecutor(cmd);
+            executor.handleImmediately();
+            return cmd.getResult();
+
     }
 }

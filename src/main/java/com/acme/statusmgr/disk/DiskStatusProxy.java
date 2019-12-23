@@ -2,7 +2,6 @@ package com.acme.statusmgr.disk;
 
 import com.acme.statusmgr.beans.ServerStatus;
 import com.acme.statusmgr.beans.StatusResponce;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -41,20 +40,18 @@ public class DiskStatusProxy implements StatusResponce {
     public void setStatusDesc(String statusDesc) {
         ds.setStatusDesc(statusDesc);
     }
-    public String obtainStatusDesc(){
-        DiskStatusThread dst = new DiskStatusThread(ds);
-        Thread t = new Thread(dst);
-        t.start();
-        String result="";
-        if(DISK_STATUS_RESULTS.equals("")){
-            System.out.println("in if");
-            throw new DiskStatusUnavailableException();
-        }
-        else{
-            result="please check back in a few minutes for a more up to date version"+ System.lineSeparator()+
-                    " this version is from " + System.lineSeparator()+
-                    DISK_STATUS_RESULTS_TIME.toString()+ System.lineSeparator() + DISK_STATUS_RESULTS;
-        }
-        return result;
+    public String obtainStatusDesc() {
+            DiskStatusThread dst = new DiskStatusThread(ds);
+            Thread t = new Thread(dst);
+            t.start();
+            String result = "";
+            if (DISK_STATUS_RESULTS.equals("")) {
+                throw new DiskStatusUnavailableException();
+            } else {
+                result = "please check back in a few minutes for a more up to date version" + System.lineSeparator() +
+                        " this version is from " + System.lineSeparator() +
+                        DISK_STATUS_RESULTS_TIME.toString() + System.lineSeparator() + DISK_STATUS_RESULTS;
+            }
+            return result;
     }
 }
