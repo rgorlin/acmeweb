@@ -12,8 +12,14 @@ public class DiskStatus implements StatusResponce {
 
     /**
      * The command for windows to interact with the disk
+     * Updated to now be a singleton object to ensure that there is only one version running at a time as it is a
+     * expensive operation
+     * @see DiskStatusProxy
+     * @see com.acme.commands.DiskStatusCmd
+     * @see DiskStatusThread
      */
     private static final String[] DISK_COMMAND = {"cmd", "/C", "Dir", "/S", "C:\\*.java"};
+    private static DiskStatus INSTANCE;
 
     /**
      * The Id number of request
@@ -30,9 +36,18 @@ public class DiskStatus implements StatusResponce {
 
     private String statusDesc;
 
-    public DiskStatus(long id, String contentHeader){
+    private DiskStatus(long id, String contentHeader){
         this.id = id;
         this.contentHeader = contentHeader;
+    }
+    public static synchronized DiskStatus getInstance(long id, String contentHeader){
+        if (INSTANCE == null){
+            INSTANCE = new DiskStatus(id, contentHeader);
+        }
+        else {
+            throw  new DiskStatusRunningException();
+        }
+        return INSTANCE;
     }
 
     @Override
@@ -63,6 +78,7 @@ public class DiskStatus implements StatusResponce {
         DiskStatusProxy.DISK_STATUS_RESULTS=diskCommandResult;
         DiskStatusProxy.DISK_STATUS_RESULTS_TIME=LocalDateTime.now();
         System.out.println("Finished running a disk command at " + LocalDateTime.now().toString());
+        INSTANCE=null;
         return diskCommandResult;
     }
     @Override

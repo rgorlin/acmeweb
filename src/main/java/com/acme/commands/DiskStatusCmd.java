@@ -28,9 +28,9 @@ public class DiskStatusCmd extends StatusCommand {
         if(name.equalsIgnoreCase("anonymous")) {
             throw new InvalidNameException();
         }
-        LOGGER.info("User "+name+" was allowed to access disk status information");
         result= new DiskStatusProxy(id,String.format(template,name));
         result.setStatusDesc(result.obtainStatusDesc());
+        LOGGER.info("User "+name+" was allowed to access disk status information");
     }
 
     @Override

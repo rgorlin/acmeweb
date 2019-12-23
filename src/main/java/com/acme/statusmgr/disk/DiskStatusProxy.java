@@ -20,7 +20,7 @@ public class DiskStatusProxy implements StatusResponce {
 
 
     public DiskStatusProxy(long id, String contentHeader){
-        ds= new DiskStatus(id,contentHeader);
+        ds=DiskStatus.getInstance(id,contentHeader);
     }
 
     @Override
