@@ -2,7 +2,7 @@ package commandtests;
 
 import com.acme.commands.DiskStatusCmd;
 import com.acme.executors.SerialExecutor;
-import com.acme.statusmgr.DiskStatus;
+import com.acme.statusmgr.disk.DiskStatus;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertTrue;
