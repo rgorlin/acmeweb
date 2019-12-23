@@ -1,10 +1,11 @@
-package com.acme.statusmgr;
+package com.acme.statusmgr.disk;
 
 import com.acme.statusmgr.beans.StatusResponce;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
 public class DiskStatus implements StatusResponce {
@@ -59,7 +60,9 @@ public class DiskStatus implements StatusResponce {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        DiskStatusProxy.DISK_STATUS_RESULTS=diskCommandResult;
+        DiskStatusProxy.DISK_STATUS_RESULTS_TIME=LocalDateTime.now();
+        System.out.println("Finished running a disk command at " + LocalDateTime.now().toString());
         return diskCommandResult;
     }
     @Override
@@ -69,5 +72,14 @@ public class DiskStatus implements StatusResponce {
 
     public void setStatusDesc(String statusDesc) {
         this.statusDesc = statusDesc;
+    }
+
+    public class DiskStatusThread implements Runnable
+    {
+        @Override
+        public void run()
+        {
+            obtainStatusDesc();
+        }
     }
 }
